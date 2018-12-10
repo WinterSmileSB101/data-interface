@@ -1,6 +1,3 @@
-# data-interface
-数据源接口
----
 > 之前更新了一个python爬虫的比价系统,然后最近抽找时间写了一个java版的,并且提供接口给大家调用,初衷是方便大家做一些项目可以加上一个小功能,所以请不要商业用途,提供出来的接口需要不可以连续频繁访问,设置了5秒限制,希望大家遵守游戏规则,如果确实需要频繁一点获取?1.代码托管到[jithub](https://github.com/18312097143/data-interface),可以clone,自行下载提取主要功能模块整合,2.联系我针对个别 ip or user 授权访问。
 
 * 说明：
@@ -14,13 +11,14 @@ https://github.com/18312097143/data-interface
 
 * 接口
   ex:http://47.107.101.121:8081/data-interface/bijia?key=荣耀10&page=1
+  
   说明:
   * key 必要参数
   * page 可选参数,default=1
     
     正常调用:
       ![成功调用](https://files-shaines-1258193137.cos.ap-guangzhou.myqcloud.com/java-data-interface.jpg)
-    频繁调用: ![在这里插入图片描述](https://files-shaines-1258193137.cos.ap-guangzhou.myqcloud.com/java-data-interface2.jpg)
+    频繁调用: ![频繁调用](https://files-shaines-1258193137.cos.ap-guangzhou.myqcloud.com/java-data-interface2.jpg)
    
 #####  讨论:
 * 博客同步到 [SHY BLOG](https:/shaines.cn)
