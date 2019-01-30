@@ -1,4 +1,5 @@
 package cn.shaines.datainterface.util;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.*;
@@ -587,15 +588,20 @@ public class CommonUtil {
 
     /**
      * 文本匹配正则
-     *
-     * @param text  文本
-     * @param regex 正则表达式
-     * @return
      */
-    public String regexMatcher(String text, String regex) {
+    public <T> T regexMatcher(String text, String regex, Class<T> clazz) {
         Matcher matcher = Pattern.compile(regex).matcher(text);
-        matcher.find();
-        return regex.contains("(") && regex.contains(")") ? matcher.group(1) : matcher.group();
+        List<String> list = new ArrayList<>();
+        while(matcher.find()){
+            list.add(regex.contains("(") && regex.contains(")") ? matcher.group(1) : matcher.group());
+        }
+        if (clazz.getTypeName().contains("String")){
+            return (T) (list.size() > 0 ?  list.get(0) : "");
+        }else if (clazz.getTypeName().contains("List")){
+            return (T) list;
+        }else {
+            return (T) list;
+        }
     }
 
     /**
@@ -705,5 +711,7 @@ public class CommonUtil {
         return SingletonHolder.INSTANCE;
     }
     /* ---------------------------------------单例模式---------------------------------------*/
+
+
 
 }

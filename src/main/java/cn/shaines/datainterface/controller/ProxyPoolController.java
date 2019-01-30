@@ -34,7 +34,7 @@ public class ProxyPoolController {
         if (currentTimeMillis - endUpdateTime > 1000 * 8) {
             for (int i = 1; i < 5; i++){
                 String html = HttpUtil.get().getHtml("http://ip.jiangxianli.com/?page=" + i);
-                List<String> list = commonUtil.subStringsBetween(html, "data-url=\"", "\"");
+                List list = CommonUtil.get().regexMatcher(html, "data-url=\"(.*)\"\\s*data-unique-id=", List.class);
                 if (list.size() == 0){
                     break;
                 }
