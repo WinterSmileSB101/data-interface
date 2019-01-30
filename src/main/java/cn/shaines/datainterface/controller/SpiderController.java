@@ -1,9 +1,8 @@
 package cn.shaines.datainterface.controller;
 
+import cn.shaines.datainterface.model.Result;
 import cn.shaines.datainterface.spider.BiBiJing;
-import cn.shaines.datainterface.util.MvcUtil;
 import cn.shaines.datainterface.util.ResultHandle;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,16 +21,14 @@ import java.util.Map;
 @RequestMapping("/data-interface")
 public class SpiderController {
 
-    private MvcUtil mvcUtil = MvcUtil.get();
-
     @Autowired
     BiBiJing biBiJing;
 
     @GetMapping("/bijia")
-    public String biJia(@RequestParam(value = "key", defaultValue = "") String key, @RequestParam(value = "page", defaultValue = "1")  int pageNum) {
+    public Result biJia(@RequestParam(value = "key", defaultValue = "") String key, @RequestParam(value = "page", defaultValue = "1") int pageNum) {
         // System.out.println("---------->>biJia" + key + "==>>" + pageNum);
-        if ("".equals(key)) return JSONObject.toJSONString(ResultHandle.getFailResult("key cannot be empty!"));
+        if ("".equals(key)) return ResultHandle.getFailResult("key can not be empty");
         Map<String, Object> process = biBiJing.process(key, pageNum);
-        return JSONObject.toJSONString(ResultHandle.getSuccessResult().setData(process));
+        return ResultHandle.getSuccessResult().setData(process);
     }
 }

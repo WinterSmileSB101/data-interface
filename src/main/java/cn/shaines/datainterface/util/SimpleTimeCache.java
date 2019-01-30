@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
  * @author: houyu
  * @create: 2018-12-05 00:02
  */
-public class SimpleTimeMap {
+public class SimpleTimeCache {
 
     transient int      thresholdSize    = 500;                                             // 阈值      :500
     transient int      overTime         = 1000 * 10;                                       // 过时      :10秒(1000 * 10)
@@ -24,10 +24,10 @@ public class SimpleTimeMap {
     private volatile Map<String, Object> valueLinkedHashMap  = new LinkedHashMap<>();      // 存储Map
     private volatile Long                LastValueTime       = 0L;                         // 最后一个添加的时间
 
-    public SimpleTimeMap() {
+    public SimpleTimeCache() {
     }
 
-    public SimpleTimeMap(int thresholdSize, int overTime){
+    public SimpleTimeCache(int thresholdSize, int overTime){
         this.thresholdSize = thresholdSize;
         this.overTime = overTime;
     }
@@ -157,9 +157,9 @@ public class SimpleTimeMap {
 
     /**--------------------------------------------------------------------------------------*/
     private static class SingletonHolder {
-        private static final SimpleTimeMap INSTANCE = new SimpleTimeMap();
+        private static final SimpleTimeCache INSTANCE = new SimpleTimeCache();
     }
-    public static SimpleTimeMap get(){
+    public static SimpleTimeCache get(){
         return SingletonHolder.INSTANCE;
     }
     /**--------------------------------------------------------------------------------------*/

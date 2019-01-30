@@ -1,13 +1,11 @@
 package cn.shaines.datainterface.spider;
 
 import cn.shaines.datainterface.util.CommonUtil;
+import cn.shaines.datainterface.util.HttpUtil;
 import cn.shaines.datainterface.util.ParseUtil;
-import cn.shaines.datainterface.util.URLConnectionUtil;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
-import javax.xml.xpath.XPath;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
@@ -24,15 +22,13 @@ public class BiBiJing {
 
     private static ParseUtil parseUtil;
     private static CommonUtil commonUtil;
-    private static URLConnectionUtil urlConnectionUtil;
-    private static XPath xPath;
+    private static HttpUtil httpUtil;
     int requestCount = 0;
 
     static {
         parseUtil = ParseUtil.get();
         commonUtil = CommonUtil.get();
-        urlConnectionUtil = URLConnectionUtil.get();
-        xPath = parseUtil.getXPath();
+        httpUtil = HttpUtil.get();
     }
 
     public Map<String, Object> process(String key, int pageNum) {
@@ -47,7 +43,7 @@ public class BiBiJing {
         requestHeader.put("Upgrade-Insecure-Requests", 1);
         try {
             if (++requestCount % 10 == 1){
-                urlConnection = urlConnectionUtil.doHttpURLConnectionGet(url, requestHeader, null);
+                urlConnection = httpUtil.doURLConnectionGet(url, requestHeader, null);
                 headerMap = urlConnection.getHeaderFields();
                 List<String> cookie = headerMap.get("Set-Cookie");
                 if (cookie != null){
@@ -61,19 +57,19 @@ public class BiBiJing {
 //                System.out.println(entry.getKey() + "----" + entry.getValue());
 //            }
 
-            url = String.format("http://www.bibijing.com/search/main?k=%s&bp=&ep=&page=%s&sort=0", commonUtil.urlEncoder(key, "utf-8"), pageNum);
+            url = String.format("http://www.bibijing.com/search/main?k=%s&bp=&ep=&page=%s&sort=0", commonUtil.encodeUrl(key, "utf-8"), pageNum);
             // System.out.println("url:" + url);
 
             requestHeader.put("Cookie", cookieString);
             requestHeader.put("Refresh", url);
 
-            urlConnection = urlConnectionUtil.doHttpURLConnectionGet(url, requestHeader, null);
-            String html = urlConnectionUtil.toString(IOUtils.toByteArray(urlConnection.getInputStream()), urlConnection.getContentType(), null);
+            urlConnection = httpUtil.doURLConnectionGet(url, requestHeader, null);
+            String html = httpUtil.toString(urlConnection,null);
 
             String data = commonUtil.subStringBetween(html, "var ss = '", "if (ss != \"\") ").trim();
-            data = commonUtil.deleteEndString(data, 2);
+            data = commonUtil.deleteEndLenString(data, 2);
             data = commonUtil.subStringBetween(data, "\"page\":", "\"brand\":");
-            data = commonUtil.deleteEndString(data, 1);
+            data = commonUtil.deleteEndLenString(data, 1);
             data = "{\"page\":" + data + "}";
 
             return JSONObject.parseObject(data);
@@ -84,8 +80,8 @@ public class BiBiJing {
     }
 
 //    public static void main(String[] args) {
-//        ManManBuy manManBuy = new ManManBuy();
-//        Map<String, Object> map = manManBuy.process("360 N7", 2);
+//        BiBiJing biBiJing = new BiBiJing();
+//        Map<String, Object> map = biBiJing.process("荣耀10", 2);
 //        System.out.println("-->>" + map);
 //    }
 
