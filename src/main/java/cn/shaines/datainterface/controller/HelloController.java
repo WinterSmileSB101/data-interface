@@ -19,7 +19,6 @@ public class HelloController {
 
         throw new RuntimeException("--------throw new RuntimeException()--------");
 
-//        return "hello world!";
     }
 
     @RequestMapping("/hello")

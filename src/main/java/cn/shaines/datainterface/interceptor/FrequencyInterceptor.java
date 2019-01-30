@@ -27,7 +27,7 @@ public class FrequencyInterceptor implements HandlerInterceptor {
     @Autowired
     private VisitLogServer visitLogServer;
 
-    private SimpleTimeCache simpleTimeCache = new SimpleTimeCache(200, 5000);// 设置3秒内不能重新访问
+    private SimpleTimeCache simpleTimeCache = new SimpleTimeCache(200, 3000);// 设置3秒内不能重新访问
 
     /**
      * controller 执行之前调用
