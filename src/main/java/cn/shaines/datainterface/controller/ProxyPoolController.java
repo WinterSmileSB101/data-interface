@@ -40,8 +40,8 @@ public class ProxyPoolController {
                 }
                 fixedCache.addAll(list);
             }
+            endUpdateTime = currentTimeMillis;
         }
-        endUpdateTime = currentTimeMillis;
         List<String> dataList = fixedCache.toList().subList(0, size > 49 ? 49 : size);
         return ResultHandle.getSuccessResult("代理IP采集于网络，请勿用于非法途径，违者后果自负！").setData(dataList);
     }
